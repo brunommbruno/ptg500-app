@@ -12,6 +12,7 @@ import {
 export default function FavouritesScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
       <View style={styles.cardContainer}>
         <View style={styles.favouriteCard}></View>
         <View style={styles.favouriteCard}></View>
@@ -28,8 +29,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: "white",
+    backgroundColor: "#313e4e",
   },
   cardContainer: {
     flex: 1,

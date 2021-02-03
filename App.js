@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Device from "expo-device";
@@ -14,10 +14,16 @@ import FavouritesScreen from "./screens/FavouritesScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
+const darkTheme = {
+  dark: true,
+  colors: {
+    background: "#313e4e",
+  },
+};
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={darkTheme}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           //customises each tab
@@ -41,7 +47,7 @@ export default function App() {
         })}
         tabBarOptions={{
           activeTintColor: "#F2771A",
-          inactiveTintColor: "#4A4242",
+          inactiveTintColor: "#c6c8cc",
           style: {
             //accounting for extra bottom space for swipe gestures on no home button iphones
             height:
@@ -51,6 +57,7 @@ export default function App() {
                 ? 60
                 : 100,
             padding: Platform.OS === "android" ? 15 : 10,
+            backgroundColor: "#262f3b",
           },
         }}
       >
