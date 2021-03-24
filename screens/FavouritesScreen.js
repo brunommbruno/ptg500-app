@@ -17,9 +17,6 @@ export default function FavouritesScreen() {
         <View style={styles.favouriteCard}></View>
         <View style={styles.favouriteCard}></View>
         <View style={styles.favouriteCard}></View>
-        <View style={styles.favouriteCard}></View>
-        <View style={styles.favouriteCard}></View>
-        <View style={styles.favouriteCard}></View>
       </View>
     </SafeAreaView>
   );
@@ -29,20 +26,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    backgroundColor: "#313e4e",
   },
   cardContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    flexWrap: "wrap",
+    flexDirection: "column",
     paddingTop: 20,
   },
   favouriteCard: {
-    width: 180,
-    height: 180,
+    width: "100%",
+    height: 110,
     backgroundColor: "#e86e31",
     borderRadius: 15,
     margin: 1,
+    marginBottom: 10,
   },
 });
