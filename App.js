@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const darkTheme = {
   dark: true,
   colors: {
-    background: "#313e4e",
+    background: "#282828",
   },
 };
 
@@ -57,7 +57,7 @@ export default function App() {
                 ? 60
                 : 100,
             padding: Platform.OS === "android" ? 15 : 10,
-            backgroundColor: "#262f3b",
+            backgroundColor: "#282828",
           },
         }}
       >

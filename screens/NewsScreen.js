@@ -1,11 +1,39 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Linking,
+  ScrollView,
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import NewsCard from "./News/NewsCard";
+import NewsNav from "./News/NewsNav";
 
 export default function News() {
+  const [selectedMenu, setMenu] = useState("news");
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>News</Text>
+      <StatusBar backgroundColor="black" style="light" />
+      <NewsNav setMenu={setMenu} selectedMenu={selectedMenu} />
+
+      {selectedMenu === "news" ? (
+        <ScrollView>
+          <NewsCard />
+          <NewsCard />
+          <NewsCard />
+          <NewsCard />
+          <NewsCard />
+        </ScrollView>
+      ) : (
+        <ScrollView>
+          <NewsCard />
+          <NewsCard />
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
@@ -13,7 +41,6 @@ export default function News() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingTop: Platform.OS === "android" ? 20 : 0,
   },
 });
