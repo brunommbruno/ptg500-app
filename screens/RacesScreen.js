@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  Image,
+} from "react-native";
 import axios from "../axios";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,62 +20,87 @@ import {
 } from "react-native-gesture-handler";
 
 function HomeScreen({ navigation }) {
-  //stores race once loaded and sets loaded to true
   const [races, setRaces] = useState();
-  const [loaded, setLoaded] = useState(false);
+  const [champs, setChamps] = useState();
 
   useEffect(() => {
-    if (loaded === false) {
-      axios.get(`/race-event-instances`).then(({ data }) => {
+    if (!races && !champs) {
+      axios.get(`/race-event-instances/active`).then(({ data }) => {
         setRaces(data.data);
-        setLoaded(true);
+      });
+      axios.get("/championship-event-instances/active").then(({ data }) => {
+        setChamps(data.data);
       });
     }
   });
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* maps through each race object and displays its content */}
-      {races ? (
-        races.map((race) => {
-          //destructuring each object
+      {champs ? (
+        champs.map((champ) => {
           const {
-            race_event_instance_id,
-            race_event_id,
             championship_event_instance_id,
+            championship_id,
             date_from,
             date_to,
+            media_url,
             status,
-          } = race;
+          } = champs;
 
           return (
-            <TouchableWithoutFeedback
-              onPress={() =>
-                //navigates to race component, passing through current race object properties
-                navigation.navigate("Race", {
-                  race_event_instance_id,
-                  race_event_id,
-                  championship_event_instance_id,
-                  date_from,
-                  date_to,
-                  status,
-                })
-              }
-              key={race.race_event_instance_id}
-            >
-              <View style={styles.raceItem}>
-                {/* displays current race object properties */}
-                <Text style={styles.raceItemText}>
-                  {race.championship_event_instance_id}, {race.race_event_id},{" "}
-                  {race.race_event_instance_id}, {race.status}, {race.date_from}
-                  /{race.date_to}
+            <View key={championship_event_instance_id}>
+              <View style={styles.champHeader}>
+                <Text style={styles.champHeaderText}>
+                  {champ.championship_id}
                 </Text>
               </View>
-            </TouchableWithoutFeedback>
+              {races
+                ? races.map((race) => {
+                    const {
+                      race_event_instance_id,
+                      race_event,
+                      championship_event_instance_id,
+                      date_from,
+                      date_to,
+                      status,
+                    } = race;
+
+                    return race.championship_event_instance_id ===
+                      champ.championship_event_instance_id ? (
+                      <TouchableWithoutFeedback
+                        onPress={() =>
+                          //navigates to race component, passing through current race object properties
+                          navigation.navigate("Race", {
+                            race_event_instance_id,
+                            race_event,
+                            championship_event_instance_id,
+                            date_from,
+                            date_to,
+                            status,
+                          })
+                        }
+                        key={race.race_event_instance_id}
+                      >
+                        <View style={styles.champRaces}>
+                          <Image
+                            style={styles.raceImage}
+                            source={{ uri: race.media_url }}
+                          />
+                          <Text style={styles.raceText}>
+                            {race.race_event[0].town}
+                          </Text>
+                          <Text style={styles.raceDate}>
+                            {race.date_from} - {race.date_to}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ) : null;
+                  })
+                : null}
+            </View>
           );
         })
       ) : (
-        //waits for GET request to be successful before displaying content to prevent error
         <Text style={styles.loading}>Loading...</Text>
       )}
     </SafeAreaView>
@@ -111,15 +143,36 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
-  raceItem: {
-    marginBottom: 10,
+  champHeader: {
+    backgroundColor: "white",
     width: "100%",
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "white",
-    justifyContent: "center",
+    padding: 10,
+    borderColor: "orange",
+    borderWidth: 2,
   },
-  raceItemText: {
-    color: "white",
+  champHeaderText: {
+    fontWeight: "bold",
+  },
+  champRaces: {
+    backgroundColor: "white",
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "transparent",
+    borderBottomColor: "black",
+  },
+  raceImage: {
+    height: 30,
+    width: 60,
+  },
+  raceText: {
+    fontSize: 20,
+    paddingLeft: 10,
+  },
+  raceDate: {
+    fontSize: 15,
+    position: "absolute",
+    right: 20,
   },
 });

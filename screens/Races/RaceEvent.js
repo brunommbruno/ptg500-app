@@ -4,37 +4,23 @@ import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import axios from "../../axios";
 
 export default function RaceEvent({ route, navigation }) {
-  const [main_race, setRace] = useState();
-  const [main_championship, setChampionship] = useState();
-  const [classfication, setClassfication] = useState();
-  const [loaded, setLoaded] = useState(false);
-
   const {
     race_event_instance_id,
-    race_event_id,
+    race_event,
     championship_event_instance_id,
     date_from,
     date_to,
     status,
   } = route.params;
 
-  useEffect(() => {
-    if (loaded === false) {
-      axios.get(`/main-race-events/${race_event_id}`).then(({ data }) => {
-        setRace(data.data);
-        setLoaded(true);
-      });
-    }
-  });
-
-  return loaded ? (
+  return (
     <SafeAreaView style={styles.container}>
       <Button title="go back" onPress={() => navigation.goBack()} />
       <Text style={{ color: "white", textAlign: "center" }}>
         CEI_id: {championship_event_instance_id}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        RV_id: {race_event_id}
+        RV_id: {race_event.race_event_id}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
         {" "}
@@ -49,22 +35,22 @@ export default function RaceEvent({ route, navigation }) {
         --------------
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        {main_race.event_name}
+        {race_event[0].race_event_id}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        {main_race.main_championship_id}
+        {race_event[0].main_championship_id}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        {main_race.race_event_id}
+        {race_event[0].race_event_id}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        {main_race.status}
+        {race_event[0].status}
       </Text>
       <Text style={{ color: "white", textAlign: "center" }}>
-        {main_race.town}
+        {race_event[0].town}
       </Text>
     </SafeAreaView>
-  ) : null;
+  );
 }
 
 const styles = StyleSheet.create({
