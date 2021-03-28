@@ -14,7 +14,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import RaceEvent from "./Races/RaceEvent";
-import RacesNav from "./Races/RacesNav";
 import {
   TouchableHighlight,
   TouchableWithoutFeedback,
@@ -23,7 +22,6 @@ import {
 function HomeScreen({ navigation }) {
   const [races, setRaces] = useState();
   const [champs, setChamps] = useState();
-  const [selectedMenu, setMenu] = useState("active");
 
   useEffect(() => {
     if (!races && !champs) {
@@ -38,7 +36,9 @@ function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <RacesNav setMenu={setMenu} selectedMenu={selectedMenu} />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>RACES</Text>
+      </View>
       {champs ? (
         champs.map((champ) => {
           const {
@@ -51,7 +51,10 @@ function HomeScreen({ navigation }) {
           } = champs;
 
           return (
-            <View key={championship_event_instance_id}>
+            <View
+              style={styles.champGroup}
+              key={championship_event_instance_id}
+            >
               <View style={styles.champHeader}>
                 <Text style={styles.champHeaderText}>
                   {champ.championship_id}
@@ -146,12 +149,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
+  champGroup: {
+    marginBottom: 10,
+  },
   champHeader: {
     backgroundColor: "white",
     width: "100%",
     padding: 10,
-    borderColor: "orange",
-    borderWidth: 2,
+    borderBottomWidth: 2,
+    borderBottomColor: "#d9915b",
   },
   champHeaderText: {
     fontWeight: "bold",
@@ -177,5 +183,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     position: "absolute",
     right: 20,
+  },
+  header: {
+    marginBottom: 10,
+    width: "100%",
+    backgroundColor: "#d9915b",
+    flexDirection: "row",
+    paddingTop: 31,
+    paddingLeft: 15,
+  },
+  headerText: {
+    color: "white",
+    fontSize: 15,
+    paddingTop: 5,
+    paddingBottom: 8,
+    fontWeight: "bold",
   },
 });
