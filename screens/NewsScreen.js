@@ -13,6 +13,8 @@ import NewsCard from "./News/NewsCard";
 import NewsNav from "./News/NewsNav";
 import MediaCard from "./News/MediaCard";
 
+import Badge from "../assets/components/Badge";
+
 export default function News() {
   const [selectedMenu, setMenu] = useState("news");
 
@@ -23,8 +25,9 @@ export default function News() {
       <View style={styles.main}>
         {selectedMenu === "news" ? (
           <ScrollView>
+            <Badge text="NEW" color="green" />
             <NewsCard
-              title="Lorem Ipsum dolor sit amet"
+              title="Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod temp adipiscing"
               link="https://www.youtube.com/embed/I8eUZUCKDzc"
               image_url="https://matraxlubricants.com/wp-content/uploads/2020/11/1.jpg"
               type="main"
@@ -70,9 +73,10 @@ export default function News() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? 20 : 0,
   },
   main: {
+    marginTop: 15,
     padding: 15,
+    paddingTop: 0,
   },
 });

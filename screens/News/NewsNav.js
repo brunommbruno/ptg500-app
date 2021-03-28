@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Linking,
   ScrollView,
+  Platform,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { withSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,18 +16,32 @@ export default function NewsNav({ setMenu, selectedMenu }) {
   return (
     <View style={styles.container}>
       <View style={styles.nav}>
-        <TouchableOpacity onPress={() => setMenu("news")}>
+        <TouchableOpacity
+          onPress={() => setMenu("news")}
+          style={
+            selectedMenu === "news"
+              ? styles.activeBorder
+              : styles.unactiveBorder
+          }
+        >
           <Text
             style={selectedMenu === "news" ? styles.active : styles.unactive}
           >
-            News
+            NEWS
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setMenu("media")}>
+        <TouchableOpacity
+          onPress={() => setMenu("media")}
+          style={
+            selectedMenu === "media"
+              ? styles.activeBorder
+              : styles.unactiveBorder
+          }
+        >
           <Text
             style={selectedMenu === "media" ? styles.active : styles.unactive}
           >
-            Media
+            MEDIA
           </Text>
         </TouchableOpacity>
       </View>
@@ -41,25 +56,32 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#d9915b",
     flexDirection: "row",
-    paddingTop: 20,
-    paddingLeft: 10,
+    paddingTop: Platform.OS === "android" ? 50 : 25,
+    paddingLeft: 15,
   },
   active: {
     color: "white",
-    fontSize: 20,
-    marginRight: 20,
-    padding: 5,
-    paddingBottom: 3,
+    fontSize: 15,
+    paddingTop: 5,
+    paddingBottom: 8,
     fontWeight: "bold",
-    borderColor: "transparent",
-    borderBottomColor: "white",
-    borderWidth: 3,
   },
   unactive: {
     color: "#d4d2d2",
-    fontSize: 20,
-    marginRight: 20,
-    padding: 5,
+    fontSize: 15,
     fontWeight: "bold",
+    paddingTop: 5,
+    paddingBottom: 8,
+  },
+  activeBorder: {
+    borderColor: "transparent",
+    borderBottomColor: "white",
+    borderWidth: 3,
+    marginRight: 15,
+  },
+  unactiveBorder: {
+    borderColor: "transparent",
+    borderWidth: 3,
+    marginRight: 15,
   },
 });

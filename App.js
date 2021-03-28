@@ -12,6 +12,7 @@ import RacesScreen from "./screens/RacesScreen";
 import ChampionshipsScreen from "./screens/ChampionshipsScreen";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+
 const Tab = createBottomTabNavigator();
 const darkTheme = {
   dark: true,

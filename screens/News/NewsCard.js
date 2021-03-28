@@ -9,7 +9,10 @@ import {
   Linking,
   Image,
 } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import {
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 
 export default function NewsCard({ image_url, link, title, type }) {
   const image = {
@@ -17,43 +20,41 @@ export default function NewsCard({ image_url, link, title, type }) {
   };
 
   return type === "main" ? (
-    <TouchableHighlight onPress={() => Linking.openURL(link)}>
+    <TouchableWithoutFeedback onPress={() => Linking.openURL(link)}>
       <View style={styles.newsCard}>
-        <ImageBackground source={image} style={styles.image}>
-          <Text style={styles.cardTitle}>{title}</Text>
-        </ImageBackground>
+        <ImageBackground
+          source={image}
+          style={styles.image}
+          imageStyle={{ borderRadius: 15 }}
+        ></ImageBackground>
+        <Text style={styles.cardTitle}>{title}</Text>
       </View>
-    </TouchableHighlight>
+    </TouchableWithoutFeedback>
   ) : (
-    <TouchableHighlight onPress={() => Linking.openURL(link)}>
+    <TouchableWithoutFeedback onPress={() => Linking.openURL(link)}>
       <View style={styles.subNewsCard}>
         <Image source={image} style={styles.subImage}></Image>
         <Text style={styles.subCardTitle}>{title}</Text>
       </View>
-    </TouchableHighlight>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
   },
   newsCard: {
-    height: 200,
+    height: 230,
     width: "100%",
     marginBottom: 30,
   },
   cardTitle: {
-    bottom: 0,
-    position: "absolute",
-    backgroundColor: "rgba(22, 22, 22, 0.38)",
     width: "100%",
-    padding: 2,
-    fontSize: 30,
+    paddingLeft: 5,
+    fontSize: 20,
     color: "white",
-    fontStyle: "italic",
+    marginTop: 6,
   },
   subNewsCard: {
     height: 80,
@@ -69,5 +70,6 @@ const styles = StyleSheet.create({
   },
   subImage: {
     width: "40%",
+    borderRadius: 5,
   },
 });
