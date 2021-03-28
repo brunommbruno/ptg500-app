@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import RaceEvent from "./Races/RaceEvent";
+import RacesNav from "./Races/RacesNav";
 import {
   TouchableHighlight,
   TouchableWithoutFeedback,
@@ -22,6 +23,7 @@ import {
 function HomeScreen({ navigation }) {
   const [races, setRaces] = useState();
   const [champs, setChamps] = useState();
+  const [selectedMenu, setMenu] = useState("active");
 
   useEffect(() => {
     if (!races && !champs) {
@@ -36,6 +38,7 @@ function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <RacesNav setMenu={setMenu} selectedMenu={selectedMenu} />
       {champs ? (
         champs.map((champ) => {
           const {
@@ -136,7 +139,7 @@ export default function RacesScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? 30 : 0,
+    paddingTop: Platform.OS === "android" ? 25 : 0,
   },
   loading: {
     paddingTop: 100,
