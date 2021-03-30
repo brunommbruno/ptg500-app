@@ -43,7 +43,7 @@ function HomeScreen({ navigation }) {
         champs.map((champ) => {
           const {
             championship_event_instance_id,
-            championship_id,
+            championship,
             date_from,
             date_to,
             media_url,
@@ -53,11 +53,15 @@ function HomeScreen({ navigation }) {
           return (
             <View
               style={styles.champGroup}
-              key={championship_event_instance_id}
+              key={champ.championship_event_instance_id}
             >
               <View style={styles.champHeader}>
+                <Image
+                  style={styles.champImage}
+                  source={{ uri: champ.media_url }}
+                />
                 <Text style={styles.champHeaderText}>
-                  {champ.championship_id}
+                  {champ.championship[0].championship_description}
                 </Text>
               </View>
               {races
@@ -158,9 +162,16 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 2,
     borderBottomColor: "#d9915b",
+    flexDirection: "row",
+    alignItems: "center",
   },
   champHeaderText: {
     fontWeight: "bold",
+  },
+  champImage: {
+    height: 30,
+    width: 40,
+    marginRight: 10,
   },
   champRaces: {
     backgroundColor: "white",
@@ -173,11 +184,12 @@ const styles = StyleSheet.create({
   },
   raceImage: {
     height: 30,
-    width: 60,
+    width: 50,
+    marginRight: 10,
+    resizeMode: "stretch",
   },
   raceText: {
     fontSize: 20,
-    paddingLeft: 10,
   },
   raceDate: {
     fontSize: 15,
