@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Button,
   Image,
+  ScrollView,
 } from "react-native";
 import axios from "../axios";
 
@@ -37,82 +38,140 @@ function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>RACES</Text>
+        <Text style={styles.headerText}>EVENTOS</Text>
       </View>
-      {champs ? (
-        champs.map((champ) => {
-          const {
-            championship_event_instance_id,
-            championship,
-            date_from,
-            date_to,
-            media_url,
-            status,
-          } = champs;
+      <ScrollView>
+        {champs ? (
+          champs.map((champ) => {
+            const {
+              championship_event_instance_id,
+              championship,
+              date_from,
+              date_to,
+              media_url,
+              status,
+            } = champs;
 
-          return (
-            <View
-              style={styles.champGroup}
-              key={champ.championship_event_instance_id}
-            >
-              <View style={styles.champHeader}>
-                <Image
-                  style={styles.champImage}
-                  source={{ uri: champ.media_url }}
-                />
-                <Text style={styles.champHeaderText}>
-                  {champ.championship[0].championship_description}
-                </Text>
-              </View>
-              {races
-                ? races.map((race) => {
-                    const {
-                      race_event_instance_id,
-                      race_event,
-                      championship_event_instance_id,
-                      date_from,
-                      date_to,
-                      status,
-                    } = race;
+            return (
+              <View
+                style={styles.champGroup}
+                key={champ.championship_event_instance_id}
+              >
+                <View style={styles.champHeader}>
+                  <Image
+                    style={styles.champImage}
+                    source={{ uri: champ.media_url }}
+                  />
+                  <Text style={styles.champHeaderText}>
+                    {champ.championship[0].championship_description}
+                  </Text>
+                </View>
+                {races
+                  ? races.map((race) => {
+                      const {
+                        race_event_instance_id,
+                        race_event,
+                        championship_event_instance_id,
+                        date_from,
+                        date_to,
+                        status,
+                        media_url,
+                      } = race;
 
-                    return race.championship_event_instance_id ===
-                      champ.championship_event_instance_id ? (
-                      <TouchableWithoutFeedback
-                        onPress={() =>
-                          //navigates to race component, passing through current race object properties
-                          navigation.navigate("Race", {
-                            race_event_instance_id,
-                            race_event,
-                            championship_event_instance_id,
-                            date_from,
-                            date_to,
-                            status,
-                          })
+                      const toMonth = (month) => {
+                        switch (month.substr(5, 2)) {
+                          case "01":
+                            month = "Jan";
+                            break;
+                          case "02":
+                            month = "Fev";
+                            break;
+                          case "03":
+                            month = "Mar";
+                            break;
+                          case "04":
+                            month = "Abr";
+                            break;
+                          case "05":
+                            month = "Mai";
+                            break;
+                          case "06":
+                            month = "Jun";
+                            break;
+                          case "07":
+                            month = "Jul";
+                            break;
+                          case "08":
+                            month = "Ago";
+                            break;
+                          case "09":
+                            month = "Set";
+                            break;
+                          case "10":
+                            month = "Out";
+                            break;
+                          case "11":
+                            month = "Nov";
+                            break;
+                          case "12":
+                            month = "Dez";
+                            break;
                         }
-                        key={race.race_event_instance_id}
-                      >
-                        <View style={styles.champRaces}>
-                          <Image
-                            style={styles.raceImage}
-                            source={{ uri: race.media_url }}
-                          />
-                          <Text style={styles.raceText}>
-                            {race.race_event[0].town}
-                          </Text>
-                          <Text style={styles.raceDate}>
-                            {race.date_from} - {race.date_to}
-                          </Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                    ) : null;
-                  })
-                : null}
-            </View>
-          );
-        })
-      ) : (
-        <Text style={styles.loading}>Loading...</Text>
-      )}
+
+                        return month;
+                      };
+
+                      return race.championship_event_instance_id ===
+                        champ.championship_event_instance_id ? (
+                        <TouchableWithoutFeedback
+                          onPress={() =>
+                            //navigates to race component, passing through current race object properties
+                            navigation.navigate("Race", {
+                              race_event_instance_id,
+                              race_event,
+                              championship: champ.championship[0],
+                              championship_event_instance_id,
+                              date_from,
+                              date_to,
+                              media_url,
+                              status,
+                            })
+                          }
+                          key={race.race_event_instance_id}
+                        >
+                          <View style={styles.champRaces}>
+                            <Image
+                              style={styles.raceImage}
+                              source={{ uri: race.media_url }}
+                            />
+                            <Text style={styles.raceText}>
+                              {race.race_event[0].event_name}
+                            </Text>
+                            {race.date_from === race.date_to ? (
+                              <Text style={styles.raceDate}>
+                                {race.date_from.substr(8, 2)}{" "}
+                                {toMonth(race.date_from)}
+                              </Text>
+                            ) : (
+                              <Text style={styles.raceDate}>
+                                {race.date_from.substr(8, 2)}{" "}
+                                {toMonth(race.date_from)} -{" "}
+                                {race.date_to.substr(8, 2)}{" "}
+                                {toMonth(race.date_to)}
+                              </Text>
+                            )}
+                          </View>
+                        </TouchableWithoutFeedback>
+                      ) : null;
+                    })
+                  : null}
+              </View>
+            );
+          })
+        ) : (
+          <Text style={styles.loading}>Loading...</Text>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -154,7 +213,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   champGroup: {
-    marginBottom: 10,
+    marginBottom: 20,
   },
   champHeader: {
     backgroundColor: "white",
@@ -167,6 +226,7 @@ const styles = StyleSheet.create({
   },
   champHeaderText: {
     fontWeight: "bold",
+    color: "black",
   },
   champImage: {
     height: 30,
@@ -174,13 +234,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   champRaces: {
-    backgroundColor: "white",
+    backgroundColor: "#282828",
     padding: 10,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "transparent",
-    borderBottomColor: "black",
+    borderBottomColor: "#d9915b",
   },
   raceImage: {
     height: 30,
@@ -189,12 +249,14 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
   },
   raceText: {
-    fontSize: 20,
+    fontSize: 18,
+    color: "#c6c8cc",
   },
   raceDate: {
     fontSize: 15,
     position: "absolute",
     right: 20,
+    color: "#c6c8cc",
   },
   header: {
     marginBottom: 10,
