@@ -23,6 +23,7 @@ import {
 function HomeScreen({ navigation }) {
   const [races, setRaces] = useState();
   const [champs, setChamps] = useState();
+  const [currentMonth, setCurrentMonth] = useState("04");
 
   useEffect(() => {
     if (!races && !champs) {
@@ -35,11 +36,89 @@ function HomeScreen({ navigation }) {
     }
   });
 
+  const selectedMonthRaces = races
+    ? races.filter((race) => race.date_from.substr(5, 2) === currentMonth)
+    : null;
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>EVENTOS</Text>
       </View>
+      <ScrollView style={styles.dateNav} horizontal={true}>
+        <Text
+          style={currentMonth === "01" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("01")}
+        >
+          Janeiro
+        </Text>
+        <Text
+          style={currentMonth === "02" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("02")}
+        >
+          Fevereiro
+        </Text>
+        <Text
+          style={currentMonth === "03" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("03")}
+        >
+          Março
+        </Text>
+        <Text
+          style={currentMonth === "04" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("04")}
+        >
+          Abril
+        </Text>
+        <Text
+          style={currentMonth === "05" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("05")}
+        >
+          Maio
+        </Text>
+        <Text
+          style={currentMonth === "06" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("06")}
+        >
+          Junho
+        </Text>
+        <Text
+          style={currentMonth === "07" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("07")}
+        >
+          Julho
+        </Text>
+        <Text
+          style={currentMonth === "08" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("08")}
+        >
+          Agosto
+        </Text>
+        <Text
+          style={currentMonth === "09" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("09")}
+        >
+          Setembro
+        </Text>
+        <Text
+          style={currentMonth === "10" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("10")}
+        >
+          Outubro
+        </Text>
+        <Text
+          style={currentMonth === "11" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("11")}
+        >
+          Novembro
+        </Text>
+        <Text
+          style={currentMonth === "12" ? styles.monthCurrent : styles.monthTab}
+          onPress={() => setCurrentMonth("12")}
+        >
+          Dezembro
+        </Text>
+      </ScrollView>
       <ScrollView>
         {champs ? (
           champs.map((champ) => {
@@ -52,7 +131,15 @@ function HomeScreen({ navigation }) {
               status,
             } = champs;
 
-            return (
+            const racesInChamp = selectedMonthRaces
+              ? selectedMonthRaces.filter(
+                  (race) =>
+                    race.championship_event_instance_id ===
+                    champ.championship_event_instance_id
+                )
+              : [];
+
+            return racesInChamp.length === 0 ? null : (
               <View
                 style={styles.champGroup}
                 key={champ.championship_event_instance_id}
@@ -66,8 +153,8 @@ function HomeScreen({ navigation }) {
                     {champ.championship[0].championship_description}
                   </Text>
                 </View>
-                {races
-                  ? races.map((race) => {
+                {selectedMonthRaces
+                  ? selectedMonthRaces.map((race) => {
                       const {
                         race_event_instance_id,
                         race_event,
@@ -272,5 +359,24 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 8,
     fontWeight: "bold",
+  },
+  monthTab: {
+    color: "#d4d2d2",
+    fontSize: 20,
+    padding: 10,
+    borderColor: "transparent",
+    borderWidth: 3,
+  },
+  monthCurrent: {
+    color: Platform.OS === "android" ? "white" : "#d9915b",
+    fontSize: 20,
+    padding: 10,
+    borderColor: "transparent",
+    borderBottomColor: "#d9915b",
+    borderWidth: 3,
+  },
+  dateNav: {
+    flexDirection: "row",
+    flexGrow: 0,
   },
 });
