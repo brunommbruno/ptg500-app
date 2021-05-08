@@ -13,6 +13,9 @@ import ChampionshipsScreen from "./screens/ChampionshipsScreen";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 
+//testing
+import PilotScreen from "./screens/PilotScreen";
+
 const Tab = createBottomTabNavigator();
 const darkTheme = {
   dark: true,
@@ -65,7 +68,8 @@ export default function App() {
         <Tab.Screen name="Races" component={RacesScreen} />
         <Tab.Screen name="Championships" component={ChampionshipsScreen} />
         <Tab.Screen name="Favourites" component={FavouritesScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
+        <Tab.Screen name="Settings" component={PilotScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
