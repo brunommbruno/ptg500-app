@@ -20,7 +20,6 @@ function HomeScreen({ navigation }) {
     //GETS championships API and stores to state
     if (!champs) {
       axios.get(`/championships`).then(({ data }) => {
-        console.log(data);
         setChamps(data.data);
       });
     }
