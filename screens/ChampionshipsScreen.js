@@ -20,6 +20,7 @@ function HomeScreen({ navigation }) {
     //GETS championships API and stores to state
     if (!champs) {
       axios.get(`/championships`).then(({ data }) => {
+        console.log(data);
         setChamps(data.data);
       });
     }
@@ -59,8 +60,7 @@ function HomeScreen({ navigation }) {
                   <Image
                     style={styles.champImage}
                     source={{
-                      uri:
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1280px-Flag_of_Portugal.svg.png",
+                      uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1280px-Flag_of_Portugal.svg.png",
                     }}
                   />
                   {/* championship description */}
